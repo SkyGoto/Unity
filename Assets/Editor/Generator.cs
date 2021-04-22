@@ -26,7 +26,7 @@ namespace CSObjectWrapEditor
 #if XLUA_GENERAL
         public static string common_path = "./Gen/";
 #else
-        public static string common_path = Application.dataPath + "/XLua/Gen/";
+        public static string common_path = Application.dataPath + "/Scripts/XLua/Gen/";
 #endif
 
         static GeneratorConfig()
@@ -953,6 +953,7 @@ namespace CSObjectWrapEditor
 
             var delegates_groups = types.Select(delegate_type => makeMethodInfoSimulation(delegate_type.GetMethod("Invoke")))
                 .Where(d => d.DeclaringType.FullName != null)
+                .Where(d => !d.DeclaringType.FullName.Contains("<>"))  // DelegatesGensBridge生成 f__AnonymousType1 https://github.com/Tencent/xLua/issues/673
                 .Concat(hotfxDelegates)
                 .GroupBy(d => d, comparer).Select((group) => new { Key = group.Key, Value = group.ToList()});
             GenOne(typeof(DelegateBridge), (type, type_info) =>
