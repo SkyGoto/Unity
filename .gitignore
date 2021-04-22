@@ -12,3 +12,6 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 .idea
+*.csproj
+Assets/Scripts/XLua/Gen
+*.meta
