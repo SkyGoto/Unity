@@ -221,6 +221,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1387732767}
   - component: {fileID: 1387732766}
+  - component: {fileID: 1387732769}
+  - component: {fileID: 1387732768}
   m_Layer: 5
   m_Name: UIPanel
   m_TagString: Untagged
@@ -264,8 +266,40 @@ Transform:
   m_GameObject: {fileID: 1387732765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.018796992, y: 0.018796992, z: 0.018796992}
+  m_LocalScale: {x: 0.015011487, y: 0.015011487, z: 0.015011487}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1387732768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387732765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a723f7fd716aac049aa24e9186f18685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMode: 1
+  screenMatchMode: 0
+  designResolutionX: 1440
+  designResolutionY: 650
+  fallbackScreenDPI: 96
+  defaultSpriteDPI: 96
+  constantScaleFactor: 1
+  ignoreOrientation: 0
+--- !u!114 &1387732769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387732765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045524395b8a48049fc0aa7244af46ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
