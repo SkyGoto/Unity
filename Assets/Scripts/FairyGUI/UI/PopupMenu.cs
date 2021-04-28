@@ -85,6 +85,7 @@ namespace FairyGUI
         /// <param name="caption"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
+        [Obsolete]  // TODO 出现了 EventCallback0 / EventCallback1 的近似重载， 先将这个函数废弃处理[废弃函数若是不要被调用一定要先生成代码]
         public GButton AddItem(string caption, EventCallback0 callback)
         {
             GButton item = CreateItem(caption, callback);
@@ -370,7 +371,7 @@ namespace FairyGUI
         }
 
         [Obsolete]
-        public void Show(GObject target, object downward)
+        public void Show(GObject target, object downward)  // TODO  Obsolete function need delete
         {
             Show(target, downward == null ? PopupDirection.Auto : ((bool)downward == true ? PopupDirection.Down : PopupDirection.Up), null);
         }

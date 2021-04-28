@@ -6,82 +6,64 @@
 
 require("LuaConf/RequireLuaFiles")
 
-BasicMain = {}
-
---local fgui = CS.FairyGUI
---local Engine =  CS.UnityEngine
---local UIConfig = CS.UnityEngine.UIConfig
---local UIPackage = CS.UnityEngine.UIPackage
+local BasicMain  = class("BasicMain")
 
 function awake()
     print("lua awake...")
-    BasicMain.init()
-    --UIConfig.defaultFont = "Microsoft YaHei"
-    --UIPackage.AddPackage("UI/Basics")
-    --UIConfig.verticalScrollBar = "ui://Basics/ScrollBar_VT"
-    --UIConfig.horizontalScrollBar = "ui://Basics/ScrollBar_HZ"
-    --UIConfig.popupMenu = "ui://Basics/PopupMenu"
-    --UIConfig.buttonSound = (NAudioClip)UIPackage.GetItemAsset("Basics", "click")
+    BasicMain.New()
 end
 
 function start()
-    --Engine.Application.targetFrameRate = 60
-    --GUI.Stage.inst.onKeyDown.Add(OnKeyDown)
 end
 
-function BasicMain.onClickBack()
-    print("click the button")
-end
 
 function OnClick()
     print('you click')
 end
 
-function BasicMain.init()
-    print("use basicMain.")
-    groot = GRoot.inst
+function BasicMain:Ctor()
+    print_r(self, "base")
+    self.groot = GRoot.inst  -- C# 中已经实例化了
     fgui.UIPackage.AddPackage("UI/Basics")
     local _view = fgui.UIPackage.CreateObject("Basics", "Main")
-    groot:AddChild(_view)
+    self.groot:AddChild(_view)
 
-    _demoObjects = {}
+    self._demoObjects = {}
 
-    _backBtn = _view:GetChild("btn_Back")
-    --self._backBtn:addClickListener(handler(self, self.onClickBack))
-    _backBtn.onClick:Add(OnClick)
+    self._backBtn = _view:GetChild("btn_Back")
+    self._backBtn.onClick:Add(handler(self, self.onClickBack))
 
-    --self._demoContainer = _view:getChild("container");
-    --self._cc = _view:getController("c1");
+    self._demoContainer = _view:GetChild("container");
+    self._cc = _view:GetController("c1");
 
     local cnt = _view.numChildren
     for i = 1, cnt do
         local obj = _view:GetChildAt(i - 1)
 
         if obj.group then
-            print("obj:getGroup()",obj.group.name)
+            --print("obj.group : ",obj.group.name)
 
         end
-        --if (obj:getGroup() ~= nil and obj:getGroup():getName() == "btns") then
-        --    obj:addClickListener(handler(self, self.runDemo))
-        --end
+        if obj.group ~= null and obj.group.name == "btns" then
+            obj.onClick:Add(handler(self, self.runDemo))
+        end
     end
 end
 
 function BasicMain:runDemo(context, a)
-    dump(context:getSender(), "context:getSender():")
-    local name = context:getSender():getName()
+    print("context:getSender:", context.sender.name)
+    local name = context.sender.name
     name = string.sub(name, 5)
     local v = self._demoObjects[name]
     if not v then
-        v = fgui.UIPackage:createObject("Basics", "Demo_" .. name)
-        v:retain()
+        v = fgui.UIPackage.CreateObject("Basics", "Demo_" .. name)
         self._demoObjects[name] = v
     end
 
-    self._demoContainer:removeChildren()
-    self._demoContainer:addChild(v)
-    self._cc:setSelectedIndex(1)
-    self._backBtn:setVisible(true)
+    self._demoContainer:RemoveChildren()
+    self._demoContainer:AddChild(v)
+    self._cc.selectedIndex = 1
+    self._backBtn.visible = true
 
     if (name == "Text") then
         self:playText();
@@ -99,86 +81,84 @@ function BasicMain:runDemo(context, a)
 end
 
 function BasicMain:onClickBack(context)
-    if self._cc:getSelectedIndex() == 0 then
-        local MenuScene = require("MenuScene")
-        display.runScene(MenuScene.new())
+    if self._cc.selectedIndex == 0 then
+        print("can not click this!")
         return
     end
-    self._cc:setSelectedIndex(0)
-    self._backBtn:setVisible(false)
+    self._cc.selectedIndex = 0
+    self._backBtn.visible = false
 end
 
-local startPos = 1 --cc.p(0, 0)
+local startPos = CS.UnityEngine.Vector2(0,0)
 function BasicMain:playDepth()
     local obj = self._demoObjects["Depth"]
-    local testContainer = obj:getChild("n22")
-    local fixedObj = testContainer:getChild("n0");
-    fixedObj:setSortingOrder(100);
-    fixedObj:setDraggable(true);
+    local testContainer = obj:GetChild("n22")
+    local fixedObj = testContainer:GetChild("n0")
+    fixedObj.sortingOrder = 100
+    fixedObj.draggable = true
 
-    local numChildren = testContainer:numChildren();
-    local i = 1;
+    local numChildren = testContainer.numChildren
+    local i = 1
     while (i <= numChildren) do
-        local child = testContainer:getChildAt(i - 1);
+        local child = testContainer:GetChildAt(i - 1)
         if (child ~= fixedObj) then
 
-            testContainer:removeChildAt(i);
-            numChildren = numChildren - 1;
+            testContainer:RemoveChildAt(i)
+            numChildren = numChildren - 1
         else
-            i = i + 1;
+            i = i + 1
         end
     end
-    startPos = fixedObj:getPosition();
+    startPos = CS.UnityEngine.Vector2(fixedObj.x, fixedObj.y)
 
-    obj:getChild("btn0"):addClickListener(function(context)
-        local graph = fgui.GGraph:create();
-        startPos.x = startPos.x + 10;
-        startPos.y = startPos.y + 10;
-        graph:setPosition(startPos.x, startPos.y);
-        graph:drawRect(150, 150, 1, cc.c4f(0, 0, 0, 1), cc.c4f(1, 0, 0, 1));
-        obj:getChild("n22"):addChild(graph);
+    obj:GetChild("btn0").onClick:Add(function(context)
+        local graph = fgui.GGraph()
+        startPos.x = startPos.x + 10
+        startPos.y = startPos.y + 10
+        graph.xy = startPos
+        graph:DrawRect(150, 150, 1, CS.UnityEngine.Color.black, CS.UnityEngine.Color.red)
+        obj:GetChild("n22"):AddChild(graph);
     end)
 
-    obj:getChild("btn1"):addClickListener(function(context)
-        local graph = fgui.GGraph:create();
-        startPos.x = startPos.x + 10;
-        startPos.y = startPos.y + 10;
-        graph:setPosition(startPos.x, startPos.y);
-        graph:drawRect(150, 150, 1, cc.c4f(0, 0, 0, 1), cc.c4f(0, 1, 0, 1));
-        graph:setSortingOrder(200);
-        obj:getChild("n22"):addChild(graph);
+    obj:GetChild("btn1").onClick:Add(function(context)
+        local graph = fgui.GGraph()
+        startPos.x = startPos.x + 10
+        startPos.y = startPos.y + 10
+        graph.xy = startPos
+        graph:DrawRect(150, 150, 1, CS.UnityEngine.Color.black, CS.UnityEngine.Color.red)
+        obj:GetChild("n22"):AddChild(graph);
+        graph.sortingOrder = 200
     end)
 
 end
 
 function BasicMain:playPopup()
     if (self._pm == nil) then
-        self._pm = fgui.PopupMenu:create("ui://Basics/PopupMenu")
-        self._pm:retain()
-        self._pm:addItem("Item 1", handler(self, self.onClickMenu));
-        self._pm:addItem("Item 2", handler(self, self.onClickMenu));
-        self._pm:addItem("Item 3", handler(self, self.onClickMenu));
-        self._pm:addItem("Item 4", handler(self, self.onClickMenu));
+        self._pm = fgui.PopupMenu("ui://Basics/PopupMenu")  -- 也可以通过配置 UIConfig.popupMenu 来免去用Create函数
+        print(self.onClickMenu, self)
+        self._pm:AddItem("Item 1", xutil.bind(self.onClickMenu, self));
+        self._pm:AddItem("Item 2", xutil.bind(self.onClickMenu, self));
+        self._pm:AddItem("Item 3", xutil.bind(self.onClickMenu, self));
+        self._pm:AddItem("Item 4", xutil.bind(self.onClickMenu, self));
     end
 
     if (self._popupCom == nil) then
-        self._popupCom = fgui.UIPackage:createObject("Basics", "Component12");
-        self._popupCom:retain()
+        self._popupCom = fgui.UIPackage.CreateObject("Basics", "Component12");
         -- self._popupCom:center();
     end
 
     local obj = self._demoObjects["Popup"]
-    obj:getChild("n0"):addClickListener(function(context)
-        self._pm:show(context:getSender(), fgui.PopupDirection.DOWN);
+    obj:GetChild("n0").onClick:Add(function(context)
+        self._pm:Show(context.sender, CS.FairyGUI.PopupDirection.Down);
     end)
 
-    obj:getChild("n1"):addClickListener(function(context)
+    obj:GetChild("n1").onClick:Add(function(context)
         print("1111111",self._popupCom,self.groot)
-        self.groot:showPopup(self._popupCom);
+        self.groot:ShowPopup(self._popupCom);
     end)
 
-    obj:addEventListener(17, function(context)
-        self._pm:show();
+    obj.onRightClick:Add(function(context)
+        self._pm:Show();
     end)
 end
 
@@ -186,18 +166,16 @@ function BasicMain:playWindow()
     local obj = self._demoObjects["Window"]
 
     if (self._winA == nil) then
-        self._winA = require("Window1"):create()
-        self._winA:retain()
+        self._winA = require("Window1").Create()
 
-        self._winB = require("Window2"):create()
-        self._winB:retain()
+        self._winB = require("Window2").Create()
 
-        obj:getChild("n0"):addClickListener(function(context)
-            self._winA:show()
+        obj:GetChild("n0").onClick:Add(function(context)
+            self._winA:Show()
         end)
 
-        obj:getChild("n1"):addClickListener(function(context)
-            self._winB:show()
+        obj:GetChild("n1").onClick:Add(function(context)
+            self._winB:Show()
         end)
     end
 
@@ -236,8 +214,9 @@ end
 
 function BasicMain:onClickMenu(context)
     -- local itemObject = context:getData();
-    local itemObject = context:getSender();
-    print("click ", itemObject:getText());
+    print(context)
+    local itemObject = context.data;
+    print("click ", itemObject.text);
 end
 
 function BasicMain:playText(context)

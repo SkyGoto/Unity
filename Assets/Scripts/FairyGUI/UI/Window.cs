@@ -188,6 +188,8 @@ namespace FairyGUI
         /// </summary>
         public void Show()
         {
+            Debug.Log("C# show func");
+            Debug.Log(this);
             GRoot.inst.ShowWindow(this);
         }
 

@@ -1,0 +1,23 @@
+##区别
+### 函数开头的大小写
+C# 规范中函数的开头为大写，cdx中为小写
+```lua
+C#  :   local _view = fgui.UIPackage.CreateObject("Basics", "Main")  // 这里不用传this用. ，CreateObject为静态函数，不用this 
+cdx :   local view = fgui.UIPackage:createObject("MainMenu", "Main")
+```
+### 添加监听的方法
+```lua
+C#  ：   self._backBtn.onClick:Add(handler(self, self.runDemo))  // .onClick:Add
+cdx :   self._backBtn:addClickListener(handler(self, self.onClickBack))  // addClickListener
+```
+### 开头首字母大小写
+lua 函数名一般是小写的, C#为大写
+### set,get方法
+在set，get中
+lua 需要写出来 X.setXXX(), Y.getXXX();
+C# 中可以用上述方法，也可以直接 X.XXX, Y.XXX = val; 赋值为set，不赋值为get
+### 添加事件的监听方式
+```lua
+在C#中    ：   .onClick:Add(XXX)
+在cdx中   ：   :addClickListener(XXX)
+```

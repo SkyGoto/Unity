@@ -103,4 +103,12 @@ namespace XLua.Cast
         {
         }
     }
+    
+    // add double type
+    public class Double : Any<double>
+    {
+        public Double(float i) : base(i)
+        {
+        }
+    }
 }

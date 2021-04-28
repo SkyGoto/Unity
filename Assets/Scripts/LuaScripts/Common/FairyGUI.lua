@@ -94,6 +94,7 @@ DoShowAnimation
 OnShown
 OnHide
 ]]
+local xutil = require 'xlua.util'
 function fgui.window_class(base)
     local o = {}
     FairyGUI = CS.FairyGUI
@@ -110,13 +111,23 @@ function fgui.window_class(base)
         local ins = FairyGUI.LuaWindow()
         -- tolua.setpeer(ins, t)
         xutil.state(ins, t)
+        print_r(t, "the t")
         ins:ConnectLua(t)
-        t.EventDelegates = {}
-        if t.ctor then
-            t.ctor(ins,...)
+        --t.EventDelegates = {}
+        if t.Ctor then
+            t.Ctor(ins,...)
         end
 
         return ins
+    end
+
+    if not o.Ctor then
+        -- add default constructor
+        o.Ctor = function() end
+    end
+    
+    o.Create = function(_, ...)
+        return o.New(...)
     end
 
     return o

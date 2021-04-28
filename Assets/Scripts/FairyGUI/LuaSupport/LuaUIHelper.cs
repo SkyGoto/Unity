@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using FairyGUI.Utils;
+using UnityEngine;
 using XLua;
+using XLua.LuaDLL;
 
 namespace FairyGUI
 {
@@ -173,6 +175,7 @@ namespace FairyGUI
 		LuaFunction _DoShowAnimation;
 		LuaFunction _OnShown;
 		LuaFunction _OnHide;
+		LuaFunction _HideImmediately;
 
 		public void ConnectLua(LuaTable peerTable)
 		{
@@ -182,6 +185,9 @@ namespace FairyGUI
 			_DoShowAnimation = peerTable.Get<LuaFunction>("DoShowAnimation");
 			_OnShown = peerTable.Get<LuaFunction>("OnShown");
 			_OnHide = peerTable.Get<LuaFunction>("OnHide");
+			_HideImmediately = peerTable.Get<LuaFunction>("HideImmediately");
+			Debug.Log(_OnInit);
+			Debug.Log("_OnShown");
 		}
 
 		public override void Dispose()
@@ -200,6 +206,8 @@ namespace FairyGUI
 				_OnShown.Dispose();
 			if (_OnHide != null)
 				_OnHide.Dispose();
+			if (_HideImmediately != null)
+				_HideImmediately.Dispose();
 		}
 
 		protected override void OnInit()
@@ -232,6 +240,8 @@ namespace FairyGUI
 
 		protected override void OnShown()
 		{
+			Debug.Log("OnShown windows ");
+			Debug.Log(_OnShown);
 			base.OnShown();
 
 			if (_OnShown != null)
@@ -247,6 +257,15 @@ namespace FairyGUI
 			if (_OnHide != null)
 			{
 				_OnHide.Action<LuaWindow>(this);
+			}
+		}
+		public void HideImmediately()
+		{
+			base.HideImmediately();
+
+			if (_HideImmediately != null)
+			{
+				_HideImmediately.Action<LuaWindow>(this);
 			}
 		}
 	}

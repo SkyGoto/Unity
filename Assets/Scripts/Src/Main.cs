@@ -25,6 +25,7 @@ namespace MainLuaCode
             scriptEnv.SetMetaTable(meta);
             meta.Dispose();
             
+            scriptEnv.Set("self", this);
             luaEnv.AddLoader(MyLoader);
             luaEnv.DoString(@"require 'main'");  // 可以通过自定义加载器实现，也可以通过package.path来定义
             Action luaAwake = scriptEnv.Get<Action>("awake");

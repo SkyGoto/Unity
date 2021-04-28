@@ -1,3 +1,5 @@
 --[[引用必要的文件]]
 require("Common/FairyGUI")
-require("xlua.util")
+require("Common/LuaClass")
+require("Utils/Print_r")
+xutil = require("xlua.util")

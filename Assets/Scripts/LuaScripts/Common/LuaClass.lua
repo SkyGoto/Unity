@@ -120,6 +120,7 @@ end
 @return table
 
 ]]
+require "xlua.util"
 function class(classname, super)
     local superType = type(super)
     local cls
@@ -129,26 +130,40 @@ function class(classname, super)
         super = nil
     end
 
-    if superType == "function" or (super and super.__ctype == 1) then
+    if superType == "function" or superType == "table" then
         -- inherited from native C++ Object
         cls = {}
 
         if superType == "table" then
             -- copy fields from super
-            for k,v in pairs(super) do cls[k] = v end
-            cls.__create = super.__create
-            cls.super    = super
+            if super.UnderlyingSystemType then  -- TODO 继承C#类
+                setmetatable(cls, super)
+                --cls.base = super
+                cls.__index = cls
+                cls.__create = super
+            else
+                for k,v in pairs(super) do cls[k] = v end
+                cls.__create = super.__create
+                cls.super    = super
+            end
         else
             cls.__create = super
         end
 
         cls.Ctor    = function() end
         cls.__cname = classname
-        cls.__ctype = 1
 
         function cls.New(...)
             local instance = cls.__create(...)
             -- copy fields from class to native object
+            if type(instance) == "userdata" then
+                local t = {}
+                setmetatable(t, cls)
+                xutil.state(instance, t)
+                instance:ConnectLua(t)
+                cls.Ctor(instance, ...)
+                return instance
+            end
             for k,v in pairs(cls) do instance[k] = v end
             instance.class = cls
             instance:Ctor(...)
@@ -165,17 +180,23 @@ function class(classname, super)
         end
 
         cls.__cname = classname
-        cls.__ctype = 2 -- lua
         cls.__index = cls
 
         function cls.New(...)
             local instance = setmetatable({}, cls)
-            instance.class = cls
+            instance.Class = cls
             instance:Ctor(...)
             return instance
         end
     end
 
+    if not cls.Ctor then
+        -- add default constructor
+        cls.Ctor = function() end
+    end
+    cls.Create = function(_, ...)
+        return cls.New(...)
+    end
     return cls
 end
 
@@ -218,4 +239,10 @@ function clone(object)--clone函数
         return setmetatable(new_table, getmetatable(object))--每一次完成遍历后,就对指定table设置metatable键值  
     end  
     return _copy(object)--返回clone出来的object表指针/地址  
+end
+
+function handler(obj, method)
+    return function(...)
+        return method(obj, ...)
+    end
 end
