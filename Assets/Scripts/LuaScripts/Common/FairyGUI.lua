@@ -111,7 +111,6 @@ function fgui.window_class(base)
         local ins = FairyGUI.LuaWindow()
         -- tolua.setpeer(ins, t)
         xutil.state(ins, t)
-        print_r(t, "the t")
         ins:ConnectLua(t)
         --t.EventDelegates = {}
         if t.Ctor then

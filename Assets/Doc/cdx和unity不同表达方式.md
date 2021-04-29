@@ -20,4 +20,7 @@ C# 中可以用上述方法，也可以直接 X.XXX, Y.XXX = val; 赋值为set�
 ```lua
 在C#中    ：   .onClick:Add(XXX)
 在cdx中   ：   :addClickListener(XXX)
+在C#监听类型是单独分开的，如 onClick事件， onDragStart事件等，最后统一加个Add， cdx事件就全部混合成一个函数了
 ```
+### 泛型方法的调用
+泛型方法的调用一般只支持约束到某个基类

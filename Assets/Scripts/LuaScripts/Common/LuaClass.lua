@@ -156,13 +156,16 @@ function class(classname, super)
         function cls.New(...)
             local instance = cls.__create(...)
             -- copy fields from class to native object
-            if type(instance) == "userdata" then
+            if type(instance) == "userdata" then  -- TODO This is a bug
                 local t = {}
                 setmetatable(t, cls)
-                xutil.state(instance, t)
+                local stat = xutil.state(instance, t)
                 instance:ConnectLua(t)
-                cls.Ctor(instance, ...)
-                return instance
+                stat.__newindex = nil
+                local td = {} 
+                td = setmetatable(cls, stat)
+                td.Ctor(instance, ...)
+                return td
             end
             for k,v in pairs(cls) do instance[k] = v end
             instance.class = cls

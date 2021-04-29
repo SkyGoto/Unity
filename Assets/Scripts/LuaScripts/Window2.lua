@@ -5,7 +5,7 @@
 ---
 local Windows = require "Windows"
 local Window2 = class("Window2", FairyGUI.LuaWindow)   
-function Window2:Ctor() end
+function Window2:Ctor() print_r(Window2 , " windows2 Ctor")  end
 
 function Window2:OnInit()
     print("on init windows2")
