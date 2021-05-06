@@ -143,6 +143,16 @@ namespace FairyGUI
             }
             return (T)_meshFactory;
         }
+        
+        public  EllipseMesh GetMeshFactory1()
+        {
+            if (!(_meshFactory is EllipseMesh))
+            {
+                _meshFactory = new EllipseMesh();
+                _meshDirty = true;
+            }
+            return (EllipseMesh)_meshFactory;
+        }
 
         /// <summary>
         /// 

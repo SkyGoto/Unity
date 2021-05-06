@@ -186,8 +186,6 @@ namespace FairyGUI
 			_OnShown = peerTable.Get<LuaFunction>("OnShown");
 			_OnHide = peerTable.Get<LuaFunction>("OnHide");
 			_HideImmediately = peerTable.Get<LuaFunction>("HideImmediately");
-			Debug.Log(_OnInit);
-			Debug.Log("_OnShown");
 		}
 
 		public override void Dispose()
@@ -240,8 +238,6 @@ namespace FairyGUI
 
 		protected override void OnShown()
 		{
-			Debug.Log("OnShown windows ");
-			Debug.Log(_OnShown);
 			base.OnShown();
 
 			if (_OnShown != null)

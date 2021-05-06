@@ -7,6 +7,7 @@ namespace MainLuaCode
 {
     public class Main : MonoBehaviour
     {
+        public string luaString;
         // 一个基本的骨架
         internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
         private Action luaStart;
@@ -27,7 +28,15 @@ namespace MainLuaCode
             
             scriptEnv.Set("self", this);
             luaEnv.AddLoader(MyLoader);
-            luaEnv.DoString(@"require 'main'");  // 可以通过自定义加载器实现，也可以通过package.path来定义
+            if (!string.IsNullOrEmpty(luaString))
+            {
+                luaEnv.DoString(luaString, "Main", scriptEnv); 
+            }
+            else
+            {
+                luaEnv.DoString(@"require 'main'", "Main", scriptEnv);  // 可以通过自定义加载器实现，也可以通过package.path来定义
+            }
+            
             Action luaAwake = scriptEnv.Get<Action>("awake");
             scriptEnv.Get("start", out luaStart);
             scriptEnv.Get("update", out luaUpdate);

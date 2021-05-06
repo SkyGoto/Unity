@@ -3,12 +3,10 @@
 --- Created by Administrator.
 --- DateTime: 2021/4/26 16:14
 ---
-local Windows = require "Windows"
-local Window2 = class("Window2", FairyGUI.LuaWindow)   
+local Window2 = fgui.window_class()--class("Window2", FairyGUI.LuaWindow)   
 function Window2:Ctor() print_r(Window2 , " windows2 Ctor")  end
 
 function Window2:OnInit()
-    print("on init windows2")
     self.contentPane = fgui.UIPackage.CreateObject("Basics", "WindowB").asCom
     self:Center()
 end
@@ -16,10 +14,7 @@ end
 function Window2:DoShowAnimation()
     self:SetScale(0.1, 0.1)
     self:SetPivot(0.5, 0.5)
-    print(111111111111111111)
-    print(self, self.contentPane, type(self.contentPane), Window2)
-    print_r(self)
-    self:TweenScale(CS.UnityEngine.Vector2(1, 1), 0.3):OnComplete(handler(self, self.OnShown))
+    self:TweenScale(CS.UnityEngine.Vector2(1, 1), 0.3):OnComplete(function() self.contentPane:GetTransition("t1"):Play() end)  -- 注意闭包函数危险
 end
 
 function Window2:DoHideAnimation()
@@ -27,7 +22,6 @@ function Window2:DoHideAnimation()
 end
 
 function Window2:OnShown()
-    print(22222222222)
     self.contentPane:GetTransition("t1"):Play()
 end
 
