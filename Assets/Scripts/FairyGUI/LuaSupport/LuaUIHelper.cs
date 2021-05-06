@@ -255,7 +255,7 @@ namespace FairyGUI
 				_OnHide.Action<LuaWindow>(this);
 			}
 		}
-		public void HideImmediately()
+		public new void HideImmediately()
 		{
 			base.HideImmediately();
 

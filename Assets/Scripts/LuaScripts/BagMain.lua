@@ -15,8 +15,20 @@ function awake()
 end
 
 function BagMain:Ctor()
+    --CS.FairyGUI.SetLoaderExtension(typeof(CS.MyGLoader))
+    CS.UnityEngine.Application.targetFrameRate = 60
+    Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
+    GRoot.inst:SetContentScaleFactor(1136,640)
+    _mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui;
     
+    _bagWindow = require("BagWindow").Create();
+    _mainView:GetChild("bagBtn").onClick:Add(function() _bagWindow:Show() end)
 end
 
+function BagMain:OnKeyDown(context)
+    if context.inputEvent.keyCode == CS.UnityEngine.KeyCode.Escape then
+        CS.UnityEngine.Application.Quit()
+    end
+end
 
 return BagMain

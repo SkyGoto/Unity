@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1129640745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,10 +191,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1129640744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c64042db2724e968b8765990de1d319, type: 3}
+  m_Script: {fileID: 11500000, guid: fe593c1ec6c649a7a2719dcadfcd7d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  luaString: require 'BagMain'
+  luaPath: BagMain
+  injections: []
 --- !u!1 &1238303721
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1387732766
 MonoBehaviour:
   m_ObjectHideFlags: 0
