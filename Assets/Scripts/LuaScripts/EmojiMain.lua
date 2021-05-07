@@ -4,3 +4,160 @@
 --- DateTime: 2021/5/6 17:34
 ---
 
+require("LuaConf/RequireLuaFiles")
+
+local EmojiMain = class("EmojiMain")
+
+function awake()
+    print("lua awake...")
+    EmojiMain.New()
+end
+
+function EmojiMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/Emoji")
+
+    CS.FairyGUI.UIConfig.verticalScrollBar = "ui://Emoji/ScrollBar_VT"
+    CS.FairyGUI.UIConfig.defaultScrollBarDisplay = CS.FairyGUI.ScrollBarDisplayType.Auto;
+    CS.UnityEngine.Application.targetFrameRate = 60
+    self._messages = {}
+    self._emojies = {}
+    self:init()
+end
+
+function EmojiMain:init()
+    fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
+    _mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self._list = _mainView:GetChild("list").asList
+    self._list:SetVirtual()
+    self._list.itemProvider = function(index)
+        print_r(self, "itemProvider")
+        local msg = self._messages[index + 1]
+        if msg.fromMe then
+            return "ui://Emoji/chatRight";
+        else
+            return "ui://Emoji/chatLeft";
+        end
+    end
+    self._list.itemRenderer = function(index, obj)
+        local msg = self._messages[index + 1]
+        if not msg.fromMe then
+            obj:GetChild("name").text = msg.sender; 
+        end
+        obj.icon = fgui.UIPackage.GetItemURL("Emoji", msg.senderIcon)
+        local tf = obj:GetChild("msg").asRichTextField
+        tf.emojies = self._emojies
+        tf.text = msg.msg --EmojiParser.inst.Parse(msg.msg)
+        
+    end
+    self._input1 = _mainView:GetChild("input1").asTextInput
+    self._input1.onKeyDown:Add(__inputKeyDown1)
+    self._input2 = _mainView:GetChild("input2").asTextInput
+    self._input2.onKeyDown:Add(__inputKeyDown2)
+    for i = 0x1f600, 0x1f637 do
+        local url = fgui.UIPackage.GetItemURL("Emoji", CS.System.Convert.ToString(i, 16));
+        if url ~= null then
+            table.insert(self._emojies, CS.FairyGUI.Emoji(url))
+        end
+    end
+    self._input2.emojies = self._emojies
+    _mainView:GetChild("btnSend1").onClick:Add(xutil.bind(self.__clickSendBtn1, self))
+    _mainView:GetChild("btnSend2").onClick:Add(xutil.bind(self.__clickSendBtn2, self))
+    _mainView:GetChild("btnEmoji1").onClick:Add(handler(self, self.__clickEmojiBtn1))
+    _mainView:GetChild("btnEmoji2").onClick:Add(handler(self, self.__clickEmojiBtn2))
+
+    self.emojiSelectUI1 = fgui.UIPackage.CreateObject("Emoji", "EmojiSelectUI").asCom
+    self.emojiSelectUI1.fairyBatching = true
+    self.emojiSelectUI1:GetChild("list").asList.onClickItem:Add(handler(self, self.__clickEmoji1))
+
+    self._emojiSelectUI2 = fgui.UIPackage.CreateObject("Emoji", "EmojiSelectUI_ios").asCom;
+    self._emojiSelectUI2.fairyBatching = true;
+    self._emojiSelectUI2:GetChild("list").asList.onClickItem:Add(handler(self, self.__clickEmoji2))
+end
+
+function EmojiMain:AddMsg(sender, senderIcon, msg, fromMe)
+    print_r(self, "msg")
+    local isScrollBottom = self._list.scrollPane.isBottomMost
+    local newMessage = {}
+    newMessage.sender = sender
+    newMessage.senderIcon = senderIcon
+    newMessage.msg = msg
+    newMessage.fromMe = fromMe
+    table.insert(self._messages, newMessage)
+    if newMessage.fromMe then
+        if self._messages.Count == 1 or math.random() < 0.5 then
+            local replyMessage = {}
+            replyMessage.sender = "FairyGUI";
+            replyMessage.senderIcon = "r1";
+            replyMessage.msg = string.format("Today is a good day. [:cool]");
+            replyMessage.fromMe = false;
+            table.insert(self._messages, replyMessage)
+        end
+    end
+
+    if #self._messages > 100 then
+        table.remove(self._messages, 1)
+    end
+    self._list.numItems = #self._messages
+    if isScrollBottom then
+        self._list.scrollPane:ScrollBottom()
+    end
+    
+end
+
+function EmojiMain:__clickSendBtn1(context)
+    local msg = self._input1.text
+    if msg.Length == 0 then
+        return
+    end
+    
+    self:AddMsg("Unity", "r0", msg, true)
+    self._input1.text = ""
+end
+
+function EmojiMain:__clickSendBtn2(context)
+    local msg = self._input2.text
+    if msg.Length == 0 then
+        return 
+    end
+    self:AddMsg("Unity", "r0", msg, true);
+    self._input2.text = "";
+end
+
+function EmojiMain:__clickEmojiBtn1(context)
+    fgui.GRoot.inst:ShowPopup(self.emojiSelectUI1, context.sender, CS.FairyGUI.PopupDirection.Up)
+end
+
+function EmojiMain:__clickEmojiBtn2(context)
+    fgui.GRoot.inst.ShowPopup(self._emojiSelectUI2,context.sender, CS.FairyGUI.PopupDirection.Up)
+end
+
+function EmojiMain:__clickEmoji1(context)
+    local item = context.data
+    self._input1:ReplaceSelection("[:" + item.text + "]")
+end
+
+function EmojiMain:__clickEmoji2(context)
+    local item = context.data
+    self._input2:ReplaceSelection(CS.System.Char.ConvertFromUtf32(CS.System.Convert.ToInt32(UIPackage.GetItemByURL(item.icon).name, 16)));
+end
+
+function EmojiMain:__inputKeyDown1(context)
+    if context.inputEvent.keyCode == CS.UnityEngine.KeyCode.Return then
+        _mainView:GetChild("btnSend1").onClick:Call();
+    end
+end
+
+function EmojiMain:__inputKeyDown2(context)
+    if context.inputEvent.keyCode == CS.UnityEngine.KeyCode.Return then
+        _mainView:GetChild("btnSend2").onClick:Call();
+    end
+end
+
+function EmojiMain:OnKeyDown(context)
+    if context.inputEvent.keyCode == CS.UnityEngine.KeyCode.Escape then
+        CS.UnityEngine.Application.Quit();
+        
+    end
+end
+
+return EmojiMain
