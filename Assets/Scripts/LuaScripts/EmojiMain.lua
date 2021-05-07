@@ -30,7 +30,6 @@ function EmojiMain:init()
     self._list = _mainView:GetChild("list").asList
     self._list:SetVirtual()
     self._list.itemProvider = function(index)
-        print_r(self, "itemProvider")
         local msg = self._messages[index + 1]
         if msg.fromMe then
             return "ui://Emoji/chatRight";
@@ -75,7 +74,6 @@ function EmojiMain:init()
 end
 
 function EmojiMain:AddMsg(sender, senderIcon, msg, fromMe)
-    print_r(self, "msg")
     local isScrollBottom = self._list.scrollPane.isBottomMost
     local newMessage = {}
     newMessage.sender = sender
