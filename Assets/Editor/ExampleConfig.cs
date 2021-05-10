@@ -111,7 +111,7 @@ public static class ExampleConfig
                 | BindingFlags.Static | BindingFlags.IgnoreCase | BindingFlags.DeclaredOnly;
             foreach (var field in (from type in lua_call_csharp select type).SelectMany(type => type.GetFields(flag)))
             {
-                if (typeof(Delegate).IsAssignableFrom(field.FieldType))
+                if (typeof(Delegate).IsAssignableFrom(field.FieldType) && !isExcluded(field.FieldType))
                 {
                     delegate_types.Add(field.FieldType);
                 }
@@ -119,14 +119,14 @@ public static class ExampleConfig
 
             foreach (var method in (from type in lua_call_csharp select type).SelectMany(type => type.GetMethods(flag)))
             {
-                if (typeof(Delegate).IsAssignableFrom(method.ReturnType))
+                if (typeof(Delegate).IsAssignableFrom(method.ReturnType) && !isExcluded(method.ReturnType))
                 {
                     delegate_types.Add(method.ReturnType);
                 }
                 foreach (var param in method.GetParameters())
                 {
                     var paramType = param.ParameterType.IsByRef ? param.ParameterType.GetElementType() : param.ParameterType;
-                    if (typeof(Delegate).IsAssignableFrom(paramType))
+                    if (typeof(Delegate).IsAssignableFrom(paramType) && !isExcluded(paramType))
                     {
                         delegate_types.Add(paramType);
                     }
@@ -273,7 +273,100 @@ public static class ExampleConfig
                 new List<string>(){"System.IO.DirectoryInfo", "CreateSubdirectory", "System.String", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"System.IO.DirectoryInfo", "Create", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
-            };
+                new List<string>(){ "UnityEngine.LightProbeGroup", "probePositions"},
+                new List<string>(){"UnityEngine.LightingSettings","directionalityMode"}, 
+                new List<string>(){"UnityEngine.LightingSettings","exportTrainingData"}, 
+                new List<string>(){"UnityEngine.LightingSettings","trainingDataDestination"}, 
+                new List<string>(){"UnityEngine.LightingSettings","indirectResolution"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGather"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGatherRayCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGatherFiltering"}, 
+                new List<string>(){"UnityEngine.LightingSettings","sampling"}, 
+                new List<string>(){"UnityEngine.LightingSettings","directSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","indirectSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","maxBounces"}, 
+                new List<string>(){"UnityEngine.LightingSettings","minBounces"}, 
+                new List<string>(){"UnityEngine.LightingSettings","prioritizeView"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringMode"}, 
+                new List<string>(){"UnityEngine.LightingSettings","denoiserTypeDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","denoiserTypeIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","denoiserTypeAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filterTypeDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filterTypeIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filterTypeAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","environmentSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","lightProbeSampleCountMultiplier"}, 
+                new List<string>(){"UnityEngine.LightingSettings","directionalityMode"}, 
+                new List<string>(){"UnityEngine.LightingSettings","exportTrainingData"}, 
+                new List<string>(){"UnityEngine.LightingSettings","trainingDataDestination"}, 
+                new List<string>(){"UnityEngine.LightingSettings","indirectResolution"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGather"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGatherRayCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","finalGatherFiltering"}, 
+                new List<string>(){"UnityEngine.LightingSettings","sampling"}, 
+                new List<string>(){"UnityEngine.LightingSettings","directSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","indirectSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","maxBounces"}, 
+                new List<string>(){"UnityEngine.LightingSettings","minBounces"}, 
+                new List<string>(){"UnityEngine.LightingSettings","prioritizeView"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringMode"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filterTypeAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringGaussRadiusAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings","filteringAtrousPositionSigmaAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings","environmentSampleCount"}, 
+                new List<string>(){"UnityEngine.LightingSettings","lightProbeSampleCountMultiplier"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "autoGenerate"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "mixedBakeMode"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "albedoBoost"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "indirectScale"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "lightmapper"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "lightmapMaxSize"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "lightmapResolution"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "lightmapPadding"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "compressLightmaps"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "ao"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "aoMaxDistance"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "aoExponentIndirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "aoExponentDirect"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "extractAO"}, 
+                new List<string>(){"UnityEngine.LightingSettings", "probePositions"}, 
+                new List<string>(){"UnityEngine.AudioSettings", "GetSpatializerPluginNames"},
+                new List<string>(){ "UnityEngine.AudioSettings", "SetSpatializerPluginName" , "System.String"},
+                new List<string>(){ "UnityEngine.Caching", "SetNoBackupFlag","UnityEngine.CachedAssetBundle"},
+                new List<string>(){ "UnityEngine.Caching", "SetNoBackupFlag", "System.String","UnityEngine.Hash128"},
+                new List<string>(){ "UnityEngine.Caching", "ResetNoBackupFlag","UnityEngine.CachedAssetBundle"},
+                new List<string>(){ "UnityEngine.Caching", "ResetNoBackupFlag", "System.String","UnityEngine.Hash128"},
+                new List<string>(){"UnityEngine.DrivenRectTransformTracker", "StopRecordingUndo"},
+                new List<string>(){"UnityEngine.DrivenRectTransformTracker", "StartRecordingUndo"},
+                new List<string>(){"UnityEngine.LightProbeGroup", "dering"},
+                new List<string>(){"UnityEngine.Light", "SetLightDirty"},
+                new List<string>(){"UnityEngine.MeshRenderer", "scaleInLightmap"},
+                new List<string>(){"UnityEngine.MeshRenderer", "receiveGI"},
+                new List<string>(){"UnityEngine.MeshRenderer", "stitchLightmapSeams"},
+                new List<string>(){"UnityEngine.MeshRenderer", "scaleInLightmap"},
+                new List<string>(){"UnityEngine.MeshRenderer", "receiveGI"},
+                new List<string>(){"UnityEngine.MeshRenderer", "stitchLightmapSeams"},
+                new List<string>(){"UnityEngine.Input", "IsJoystickPreconfigured", "System.String"},
+                new List<string>(){"UnityEngine.ParticleSystemForceField", "FindAll"},
+                new List<string>(){"UnityEngine.Light", "shadowRadius"},
+                new List<string>(){"UnityEngine.Light", "shadowAngle"},
+                new List<string>(){"UnityEngine.ParticleSystemRenderer", "supportsMeshInstancing"},
+                new List<string>(){"UnityEngine.Texture", "imageContentsHash"},
+                new List<string>(){"UnityEngine.UI.Graphic", "OnRebuildRequested"},
+                new List<string>(){"UnityEngine.UI.Text", "OnRebuildRequested"},
+                new List<string>(){"UnityEngine.UI.DefaultControls", "factory"},
+                new List<string>(){ "UnityEngine.AnimatorControllerParameter", "name"},
+    };
 
 #if UNITY_2018_1_OR_NEWER
     [BlackList]

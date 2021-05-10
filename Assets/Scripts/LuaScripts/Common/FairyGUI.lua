@@ -36,6 +36,7 @@ RelationType = CS.FairyGUI.RelationType
 UIPanel = CS.FairyGUI.UIPanel
 UIPainter = CS.FairyGUI.UIPainter
 TypingEffect = CS.FairyGUI.TypingEffect
+UIConfig = CS.FairyGUI.UIConfig
 
 
 

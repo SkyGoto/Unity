@@ -80,14 +80,14 @@ public class LuaBehaviourManager : MonoBehaviour
         {
             luaPath =  Application.dataPath + "/Scripts/LuaScripts/Main.lua";
         }
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
 		luaPath = Application.dataPath + "/Scripts/LuaScripts/" + luaPath.Replace('.', '/') + ".lua";
 		luaFile = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(luaPath));
-        #else
-        TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
-        luaFile = text.text;
-        #endif
+#else
+        // TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
+        // luaFile = text.text;
+#endif
         luaEnv.DoString(luaFile,"LuaBehaviourManager", scriptEnv);
 
 //        TestHotUpdate();
@@ -138,8 +138,8 @@ public class LuaBehaviourManager : MonoBehaviour
         }
         luaBytes = File.ReadAllBytes(fileName);
 #else
-        TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
-        luaFile = text.text;
+        // TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
+        // luaFile = text.text;
 #endif
         return luaBytes;
     }

@@ -11,6 +11,12 @@ local BasicMain  = class("BasicMain")
 
 function awake()
     print("lua awake...")
+    UIPackage.AddPackage("UI/Basics");
+
+    CS.FairyGUI.UIConfig.verticalScrollBar = "ui://Basics/ScrollBar_VT";
+    CS.FairyGUI.UIConfig.horizontalScrollBar = "ui://Basics/ScrollBar_HZ";
+    CS.FairyGUI.UIConfig.popupMenu = "ui://Basics/PopupMenu";
+    CS.FairyGUI.UIConfig.buttonSound = CS.FairyGUI.UIPackage.GetItemAsset("Basics", "click");
     BasicMain.New()
 end
 
