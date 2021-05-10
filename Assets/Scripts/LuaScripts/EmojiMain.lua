@@ -49,9 +49,9 @@ function EmojiMain:init()
         
     end
     self._input1 = _mainView:GetChild("input1").asTextInput
-    self._input1.onKeyDown:Add(__inputKeyDown1)
+    self._input1.onKeyDown:Add(xutil.bind(self.__inputKeyDown1, self))
     self._input2 = _mainView:GetChild("input2").asTextInput
-    self._input2.onKeyDown:Add(__inputKeyDown2)
+    self._input2.onKeyDown:Add(xutil.bind(self.__inputKeyDown2, self))
     for i = 0x1f600, 0x1f637 do
         local url = fgui.UIPackage.GetItemURL("Emoji", CS.System.Convert.ToString(i, 16));
         if url ~= null then

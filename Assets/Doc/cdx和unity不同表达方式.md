@@ -28,3 +28,7 @@ C# 中可以用上述方法，也可以直接 X.XXX, Y.XXX = val; 赋值为set�
 ### 索引
 C# 0
 lua 1
+
+### list中的类型判断
+需提前判定list中item的类型,否则会识别到基类，见VirtualList
+CS.FairyGUI.UIObjectFactory.SetPackageItemExtension("ui://VirtualList/mailItem", typeof(CS.FairyGUI.MailItem)) 

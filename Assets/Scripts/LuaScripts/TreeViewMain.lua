@@ -57,7 +57,6 @@ function TreeViewMain:Ctor()
 end
 
 function TreeViewMain:RenderTreeNode(node, obj)
-    print_r(type(node.data))
     if node.isFolder then
         obj.text = node.data
     elseif type(node.data) == "table" then
