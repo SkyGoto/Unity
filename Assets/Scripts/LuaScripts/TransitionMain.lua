@@ -15,11 +15,16 @@ function awake()
 end
 
 function TransitionMain:Ctor()
+    self.groot = GRoot.inst  -- C# 中已经实例化了
+    fgui.UIPackage.AddPackage("UI/Transition")
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
     self.endValue = 0
     self.startValue = 0
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.mainView = UIPackage.CreateObject("Transition", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.groot:AddChild(self.mainView)
+    --self.mainView = Stage.inst.gameObject:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    --self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
     self.btnGroup = self.mainView:GetChild("g0").asGroup
 
     self.g1 = UIPackage.CreateObject("Transition", "BOSS").asCom;
@@ -100,3 +105,5 @@ function TransitionMain:OnKeyDown(context)
         CS.UnityEngine.Application.Quit();
     end
 end
+
+return TransitionMain

@@ -13,9 +13,12 @@ function awake()
 end
 
 function CooldownMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/Cooldown")
     CS.UnityEngine.Application.targetFrameRate = 60
     fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    self._mainView = this.gameObject:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    --self._mainView = this.gameObject:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self._mainView = UIPackage.CreateObject("Cooldown", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self._mainView)
     self._btn0 = self._mainView:GetChild("b0").asButton;
     self._btn0.icon = "Cooldown/k0";
     self._time1 = 5
@@ -53,3 +56,4 @@ function CooldownMain:Update()
     
 end
     
+return CooldownMain

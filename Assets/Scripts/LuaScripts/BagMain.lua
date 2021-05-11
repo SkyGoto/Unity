@@ -16,10 +16,13 @@ end
 
 function BagMain:Ctor()
     --CS.FairyGUI.SetLoaderExtension(typeof(CS.MyGLoader))
+    fgui.UIPackage.AddPackage("UI/Bag")
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
     GRoot.inst:SetContentScaleFactor(1136,640)
-    _mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui;
+    --_mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui;
+    _mainView = UIPackage.CreateObject("Bag", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(_mainView)
     
     _bagWindow = require("BagWindow").Create();
     _mainView:GetChild("bagBtn").onClick:Add(function() _bagWindow:Show() end)

@@ -9,6 +9,7 @@ require("LuaConf.RequireLuaFiles")
 
 local MenuScene = class("MenuScene")
 
+localData = nil
 
 function awake()
     print("lua awake...")
@@ -33,26 +34,23 @@ end
 function MenuScene:runDemo(context, a)
     print("context:getSender:", context.sender.name)
     local name = context.sender.name
-    
-    CS.UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene")
-    
-    if (name == "Text") then
-        self:playText();
-    elseif (name == "Depth") then
-        self:playDepth();
-    elseif (name == "Window") then
-        self:playWindow();
-    elseif (name == "Drag&Drop") then
-        self:playDragDrop();
-    elseif (name == "Popup") then
-        self:playPopup();
-    elseif name == "ProgressBar" then
-        self:playProgress()
-    elseif name == "Graph" then
-        self:playGraph()
-    elseif name == "Grid" then
-        self:playGrid()
-    elseif name == "Transition" then
-        self:playTransition()
+    name = string.sub(name, 2)
+    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "Transition", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "MenuScene", "VirtualList"}
+    for i, v in pairs(UI) do
+        print(v)
+        if i == tonumber(name) then
+            local transition = require(v)
+            print_r(transition)
+            localData = transition.Create()
+        end
     end
 end
+
+function update() 
+    -- TODO 所有class中逐帧都需要调用update
+    if localData and localData.Update then
+        localData:Update()
+    end
+end
+
+return MenuScene
