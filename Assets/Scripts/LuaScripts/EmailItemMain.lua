@@ -22,7 +22,9 @@ end
 function EmailItemMain:init()
     CS.UnityEngine.Application.targetFrameRate = 60
     fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    --self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.mainView = UIPackage.CreateObject("Extension", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self.mainView)
     
     self.list = self.mainView:GetChild("mailList").asList
     for i = 1, 10 do
@@ -53,5 +55,5 @@ function EmailItemMain:OnKeyDown(context)
 end
 
 
-
+return EmailItemMain
 

@@ -68,3 +68,4 @@ function CutSceneMain:DoLoad(sceneName)
 end
 
 
+return CutSceneMain

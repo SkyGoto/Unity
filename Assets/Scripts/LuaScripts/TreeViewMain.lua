@@ -16,9 +16,12 @@ function awake()
 end
 
 function TreeViewMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/TreeView")
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.mainView = UIPackage.CreateObject("TreeView", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self.mainView)
     self.fileURL = "ui://TreeView/file"
     self.tree1 = self.mainView:GetChild("tree").asTree
     self.tree1.onClickItem:Add(xutil.bind(self.clickNode, self))
@@ -79,3 +82,5 @@ function TreeViewMain:OnKeyDown(context)
     end
 end
 
+
+return TreeViewMain

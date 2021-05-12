@@ -26,7 +26,9 @@ end
 
 function EmojiMain:init()
     fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    _mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    _mainView = UIPackage.CreateObject("Emoji", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(_mainView)
+    --_mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
     self._list = _mainView:GetChild("list").asList
     self._list:SetVirtual()
     self._list.itemProvider = function(index)

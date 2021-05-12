@@ -23,7 +23,10 @@ function PullToRefreshMain:Ctor()
 end
 
 function PullToRefreshMain:Init()
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui;
+    fgui.UIPackage.AddPackage("UI/PullToRefresh")
+    -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui;
+    self.mainView = UIPackage.CreateObject("PullToRefresh", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self.mainView)
     
     self.list1 = self.mainView:GetChild("list1").asList
     self.list1.itemRenderer = xutil.bind(self.RenderListItem1, self)
@@ -83,3 +86,6 @@ function PullToRefreshMain:OnKeyDown()
         CS.UnityEngine.Application.Quit();
     end
 end
+
+
+return PullToRefreshMain

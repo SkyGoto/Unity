@@ -18,7 +18,9 @@ end
 function ModalWaitingMain:Ctor()
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(OnKeyDown)
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.mainView = UIPackage.CreateObject("ModalWaiting", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self.mainView)
     self.testView = require("Window4")
     self.mainView:GetChild("n0").onClick:Add(function() self.testView:Show() end)
     CS.UnityEngine.StartCoroutine(self:WaitSomeTime())

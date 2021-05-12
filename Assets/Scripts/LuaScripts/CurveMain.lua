@@ -13,9 +13,12 @@ function awake()
 end
 
 function CurveMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/Curve")
     CS.UnityEngine.Application.targetFrameRate = 60
     fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    self._mainView = this.gameObject:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    --self._mainView = this.gameObject:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self._mainView = UIPackage.CreateObject("Curve", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self._mainView)
     self._list = self._mainView:GetChild("list").asList;
     self._list:SetVirtualAndLoop()
     self._list.itemRenderer = xutil.bind(self.RenderListItem, self)
@@ -54,4 +57,4 @@ function CurveMain:DoSpecialEffect()
 end
 
 
-
+return CurveMain

@@ -18,7 +18,9 @@ end
 function VirtualListMain:Ctor()
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    self.mainView = UIPackage.CreateObject("VirtualList", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
+    GRoot.inst:AddChild(self.mainView)
     self.mainView:GetChild("n6").onClick:Add(function() 
         self.list:AddSelection(500, true)
     end)
@@ -47,3 +49,6 @@ function VirtualListMain:OnKeyDown(context)
         CS.UnityEngine.Application.Quit()
     end
 end
+
+
+return VirtualListMain
