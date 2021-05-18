@@ -22,9 +22,12 @@ function MenuScene:Ctor()
     local view = fgui.UIPackage.CreateObject("MainMenu", "Main")
     self.groot:AddChild(view)
     local cnt = view.numChildren
+    fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
+    local UI = {"" ,"BagMain", "EmojiMain", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide"}
     for i = 1, cnt do
         local obj = view:GetChildAt(i-1)
         if obj.name ~= "n3" then
+            obj.text = UI[i]
             obj.onClick:Add(handler(self, self.runDemo))
         end
     end
@@ -35,7 +38,7 @@ function MenuScene:runDemo(context, a)
     print("context:getSender:", context.sender.name)
     local name = context.sender.name
     name = string.sub(name, 2)
-    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon"}
+    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide"}
     for i, v in pairs(UI) do
         print(v)
         if i == tonumber(name) then
@@ -50,6 +53,13 @@ function update()
     -- TODO 所有class中逐帧都需要调用update
     if localData and localData.Update then
         localData:Update()
+    end
+end
+
+function MenuScene:OnKeyDown(context)
+    if context.inputEvent.keyCode == CS.UnityEngine.KeyCode.Escape then
+        CS.UnityEngine.Application.Quit();
+
     end
 end
 
