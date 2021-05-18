@@ -35,7 +35,7 @@ function MenuScene:runDemo(context, a)
     print("context:getSender:", context.sender.name)
     local name = context.sender.name
     name = string.sub(name, 2)
-    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "MenuScene", "VirtualList"}
+    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon"}
     for i, v in pairs(UI) do
         print(v)
         if i == tonumber(name) then

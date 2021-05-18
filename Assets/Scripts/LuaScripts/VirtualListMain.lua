@@ -16,6 +16,10 @@ function awake()
 end
 
 function VirtualListMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/VirtualList")
+    UIConfig.globalModalWaiting = "ui://ModalWaiting/GlobalModalWaiting"
+    UIConfig.windowModalWaiting = "ui://ModalWaiting/WindowModalWaiting"
+    CS.FairyGUI.UIObjectFactory.SetPackageItemExtension("ui://VirtualList/mailItem", typeof(CS.FairyGUI.MailItem)) -- TODO 需提前判定list中item的类型,否则会识别到基类 
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
     -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
