@@ -273,7 +273,7 @@ function Pokemon:onClickItem(context)
 end
 
 function Pokemon:onClose( )
-    GRoot.inst:RemoveChild(self.view)
+    GRoot.inst:RemoveChild(self.view) -- 若要完全删除用Dispose()
     --self.view.visible = false
 end
 

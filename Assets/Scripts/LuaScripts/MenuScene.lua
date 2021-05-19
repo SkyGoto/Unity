@@ -23,7 +23,7 @@ function MenuScene:Ctor()
     self.groot:AddChild(view)
     local cnt = view.numChildren
     fgui.Stage.inst.onKeyDown:Add(xutil.bind(self.OnKeyDown, self))
-    local UI = {"" ,"BagMain", "EmojiMain", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide"}
+    local UI = {"" ,"BagMain", "EmojiMain", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide", "ModalWaitingMain"}
     for i = 1, cnt do
         local obj = view:GetChildAt(i-1)
         if obj.name ~= "n3" then
@@ -38,7 +38,7 @@ function MenuScene:runDemo(context, a)
     print("context:getSender:", context.sender.name)
     local name = context.sender.name
     name = string.sub(name, 2)
-    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide"}
+    local UI = {"BagMain", "EmojiMain", "", "CooldownMain", "CurveMain", "CutScene", "TransitionMain", "EmailItemMain", "PullToRefreshMain", "TreeViewMain", "VirtualListMain", "basics_main", "Pokemon","Guide", "ModalWaitingMain"}
     for i, v in pairs(UI) do
         print(v)
         if i == tonumber(name) then

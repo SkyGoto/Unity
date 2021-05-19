@@ -8,26 +8,11 @@ local Window2 = fgui.window_class() --class("Window2", FairyGUI.LuaWindow)
 function Window2:Ctor() print_r(Window2 , " windows2 Ctor")  end
 
 function Window2:OnInit()
-    self.contentPane = fgui.UIPackage.CreateObject("Basics", "WindowB").asCom
-    self:Center()
-end
-
-function Window2:DoShowAnimation()
-    self:SetScale(0.1, 0.1)
-    self:SetPivot(0.5, 0.5)
-    self:TweenScale(CS.UnityEngine.Vector2(1, 1), 0.3):OnComplete(function() self.contentPane:GetTransition("t1"):Play() end)  -- 注意闭包函数危险
-end
-
-function Window2:DoHideAnimation()
-    self:TweenScale(CS.UnityEngine.Vector2(0.1, 0.1), 0.3):OnComplete(handler(self, self.HideImmediately))
-end
-
-function Window2:OnShown()
-    self.contentPane:GetTransition("t1"):Play()
-end
-
-function Window2:OnHide()
-    self.contentPane:GetTransition("t1"):Stop()
+    self.contentPane = fgui.UIPackage.CreateObject("ModalWaiting", "TestWin").asCom
+    self.contentPane:GetChild("n1").onClick:Add(function()
+        self:ShowModalWait();
+        CS.FairyGUI.Timers.inst:Add(3, 1, function(param) self:CloseModalWait() end);
+    end)
 end
 
 print_r(Window2 , " windows2 ")

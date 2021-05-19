@@ -16,19 +16,24 @@ function awake()
 end
 
 function ModalWaitingMain:Ctor()
+    fgui.UIPackage.AddPackage("UI/ModalWaiting")
+    UIConfig.globalModalWaiting = "ui://ModalWaiting/GlobalModalWaiting";
+    UIConfig.windowModalWaiting = "ui://ModalWaiting/WindowModalWaiting";
     CS.UnityEngine.Application.targetFrameRate = 60
     Stage.inst.onKeyDown:Add(OnKeyDown)
     -- self.mainView = this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
     self.mainView = UIPackage.CreateObject("ModalWaiting", "Main")  -- 这两行同 this:GetComponent(typeof(CS.FairyGUI.UIPanel)).ui
     GRoot.inst:AddChild(self.mainView)
-    self.testView = require("Window4")
+    self.testView = require("Window4").Create()
     self.mainView:GetChild("n0").onClick:Add(function() self.testView:Show() end)
-    CS.UnityEngine.StartCoroutine(self:WaitSomeTime())
+    --CS.UnityEngine:StartCoroutine(self.WaitSomeTime)
+    self:WaitSomeTime()
 end
 
 function ModalWaitingMain:WaitSomeTime()
+    CS.UnityEngine.WaitForSeconds(3)
     GRoot.inst:ShowModalWait()
-    coroutine.yield(function() CS.UnityEngine:WaitForSeconds(3) end)
+    --coroutine.yield(function() CS.UnityEngine.WaitForSeconds(3) end)
     GRoot.inst:CloseModalWait()
 end
 
@@ -39,3 +44,4 @@ function ModalWaitingMain:OnKeyDown()
 end
 
 
+return ModalWaitingMain

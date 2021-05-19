@@ -84,7 +84,7 @@ function BasicMain:runDemo(context, a)
     elseif name == "ProgressBar" then
         self:playProgress()
     elseif name == "Graph" then
-        self:playGraph()
+        --self:playGraph()
     elseif name == "Grid" then
         self:playGrid()
     elseif name == "Transition" then
