@@ -32,3 +32,5 @@ lua 1
 ### list中的类型判断
 需提前判定list中item的类型,否则会识别到基类，见VirtualList
 CS.FairyGUI.UIObjectFactory.SetPackageItemExtension("ui://VirtualList/mailItem", typeof(CS.FairyGUI.MailItem)) 
+
+### 制作prefab时将transform归 0

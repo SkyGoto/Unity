@@ -78,7 +78,8 @@ public static class ExampleConfig
             {
                 "UnityEngine",
                 "UnityEngine.UI",
-                "FairyGUI"
+                "FairyGUI",
+                "Spine.Unity"
             };
             var unityTypes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                               where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)

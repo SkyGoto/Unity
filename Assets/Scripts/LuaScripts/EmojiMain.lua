@@ -133,7 +133,7 @@ end
 
 function EmojiMain:__clickEmoji1(context)
     local item = context.data
-    self._input1:ReplaceSelection("[:" + item.text + "]")
+    self._input1:ReplaceSelection("[:" .. item.text .. "]")
 end
 
 function EmojiMain:__clickEmoji2(context)

@@ -13,15 +13,19 @@ function awake()
 end
 
 function SpineMain:Ctor()
-    skeletonAnimation = this:GetComponent(typeof(CS.Spine.Unity.SkeletonAnimation))
+    --skeletonAnimation = this:GetComponent(typeof(CS.Spine.Unity.SkeletonAnimation))
     --skeletonAnimation.AnimationName = "Attack"
-    aaa = 1
+    --aaa = 1
+    local spine = CS.UnityEngine.GameObject.Find("Animation")
+    local a = CS.UnityEngine.Resources.Load("FootSoldier_SkeletonData")
+    CS.Spine.Unity.SkeletonAnimation.AddToGameObject(spine, a)
+
 end
 
 function update()
-    if aaa==1 then
-        skeletonAnimation.AnimationName = "Attack"
-        aaa = 0
-    end
+    --if aaa==1 then
+    --    skeletonAnimation.AnimationName = "Attack"
+    --    aaa = 0
+    --end
     
 end 

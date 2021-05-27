@@ -110,7 +110,7 @@ end
 function Pokemon:init()
     self.groot = GRoot.inst
     self.view = UIPackage.CreateObject("pokemon_bag", "bag")
-    self.view:SetSize(GRoot.inst.width, GRoot.inst.height)
+    --self.view:SetSize(GRoot.inst.width, GRoot.inst.height)
     GRoot.inst:AddChild(self.view)
     self:initData()
     self:initTopUI()
@@ -133,7 +133,7 @@ end
 
 function Pokemon:initTopUI( )
     local topUI = self.view:GetChild("topUI")
-    topUI:SetSize(GRoot.inst.width,GRoot.inst.height)
+    --topUI:SetSize(GRoot.inst.width,GRoot.inst.height)
     --topUI:SetPosition(self.groot.width/2,self.groot.height)
     local closeButton = topUI:GetChild("closeBtn")
     closeButton.onClick:Add(handler(self, self.onClose))
