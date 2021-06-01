@@ -61,7 +61,7 @@ public static class ExampleConfig
         var fullName = type.FullName;
         for (int i = 0; i < exclude.Count; i++)
         {
-            if (fullName.Contains(exclude[i]))
+            if (fullName != null && fullName.Contains(exclude[i]))
             {
                 return true;
             }
