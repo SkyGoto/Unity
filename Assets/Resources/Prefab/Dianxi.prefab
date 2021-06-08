@@ -1,5 +1,62 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &386016533805279299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 864563617362104263}
+  - component: {fileID: 2185499350334232042}
+  - component: {fileID: 2209915192779405431}
+  m_Layer: 5
+  m_Name: head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &864563617362104263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386016533805279299}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.23, y: 1.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4414223043949155484}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2185499350334232042
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386016533805279299}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.27
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2209915192779405431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386016533805279299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d75187967d503459e0634818a0289a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4414223043949155483
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,8 +70,10 @@ GameObject:
   - component: {fileID: 4414223043949155486}
   - component: {fileID: 4414223043949155481}
   - component: {fileID: 4414223043949155480}
-  m_Layer: 5
-  m_Name: New SkeletonAnimation
+  - component: {fileID: 7118775229053558332}
+  - component: {fileID: 2650355184682414894}
+  m_Layer: 8
+  m_Name: Dianxi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +89,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 864563617362104263}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -128,3 +188,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   luaPath: SpineMain
   injections: []
+--- !u!143 &7118775229053558332
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414223043949155483}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.1
+  m_SkinWidth: 0.05
+  m_MinMoveDistance: 0.01
+  m_Center: {x: 0.09, y: 0.87, z: 0}
+--- !u!114 &2650355184682414894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414223043949155483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b3e3370f55c0a438ef0a10c2eba510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  XAxis: Horizontal
+  YAxis: Vertical
+  JumpButton: Jump
+  walkSpeed: 1.5
+  runSpeed: 7
+  gravityScale: 6.6
+  jumpSpeed: 13
+  minimumJumpDuration: 0.5
+  jumpInterruptFactor: 0.5
+  forceCrouchVelocity: 25
+  forceCrouchDuration: 0.5
+  skeletonAnimation: {fileID: 4414223043949155481}
+  transitions: {fileID: 0}
+  walk: {fileID: 11400000, guid: d7275f7fd5626574ebdfb6b40d5227ea, type: 2}
+  run: {fileID: 11400000, guid: d7275f7fd5626574ebdfb6b40d5227ea, type: 2}
+  idle: {fileID: 11400000, guid: 0f5f66c0f5440fc44a43034a95292c8f, type: 2}
+  jump: {fileID: 11400000, guid: 7b30bbffe412e8646abde5cbe4a55c6c, type: 2}
+  fall: {fileID: 11400000, guid: 7b30bbffe412e8646abde5cbe4a55c6c, type: 2}
+  crouch: {fileID: 11400000, guid: 34f02cc46446cd549855cbf098429281, type: 2}
+  runFromFall: {fileID: 11400000, guid: 7ca089a568b56394091db6bc13f196e5, type: 2}
+  jumpAudioSource: {fileID: 0}
+  hardfallAudioSource: {fileID: 0}
+  landParticles: {fileID: 0}
+  footstepHandler: {fileID: 0}
