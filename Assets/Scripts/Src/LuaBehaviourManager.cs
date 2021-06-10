@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using XLua;
 using System;
 using System.Collections;
@@ -88,7 +88,7 @@ public class LuaBehaviourManager : MonoBehaviour
         // TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
         // luaFile = text.text;
 #endif
-        luaEnv.DoString(luaFile,"LuaBehaviourManager", scriptEnv);
+        luaEnv.DoString(luaFile);
 
 //        TestHotUpdate();
 	}
@@ -130,17 +130,17 @@ public class LuaBehaviourManager : MonoBehaviour
         // fileName += ".lua";
         byte[] luaBytes = null;
 
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
 	    fileName = Application.dataPath + "/Scripts/LuaScripts/" + fileName.Replace('.', '/') + ".lua";
         if(!File.Exists(fileName))
         {
             return luaBytes;
         }
         luaBytes = File.ReadAllBytes(fileName);
-#else
+// #else
         // TextAsset text = App.Make<IResources>().Load<TextAsset>(luaPath).Get<TextAsset>(scriptEnv);
         // luaFile = text.text;
-#endif
+// #endif
         return luaBytes;
     }
     
