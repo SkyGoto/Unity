@@ -5,7 +5,7 @@ localData = nil
 
 function awake()
     print("lua awake...")
-    BallGame.New()
+    localData = BallGame.New()
 end
 
 function BallGame:Ctor()
@@ -57,7 +57,7 @@ function BallGame:Ctor()
     -- 创建墙壁的物理材质
     local pm = CS.UnityEngine.PhysicMaterial()
     pm.dynamicFriction = 0.6
-    pm.staticFriction = 0.6
+    ticFriction = 0.6
     pm.bounciness = 0.8
     -- 沙滩材质
     local pmSoil = CS.UnityEngine.PhysicMaterial()
@@ -91,7 +91,7 @@ function BallGame:Ctor()
     local wall = self.mainView:GetChild("wall").asGraph;
     temp = CS.UnityEngine.GameObject("wall");
     temp:AddComponent(typeof(CS.UnityEngine.BoxCollider));
-    temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).size = CS.UnityEngine.Vector3(10, 1462, 1000);
+    temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).size = CS.UnityEngine.Vector3(10, 14620, 1000);
     temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).material = pm;
     w = CS.FairyGUI.GoWrapper(temp);
     w.gameObject.name = "wall";
@@ -100,7 +100,7 @@ function BallGame:Ctor()
     local wall1 = self.mainView:GetChild("wall2").asGraph;
     temp = CS.UnityEngine.GameObject("wall2");
     temp:AddComponent(typeof(CS.UnityEngine.BoxCollider));
-    temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).size = CS.UnityEngine.Vector3(10, 1462, 1000);
+    temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).size = CS.UnityEngine.Vector3(10, 14620, 1000);
     temp:GetComponent(typeof(CS.UnityEngine.BoxCollider)).material = pm;
     w = CS.FairyGUI.GoWrapper(temp);
     w.gameObject.name = "wall2";
@@ -110,7 +110,7 @@ function BallGame:Ctor()
     local theBall = load:LoadPrefab("Prefab/Ball");
     theBall.name = "ball";
     theBall.transform.localPosition = CS.UnityEngine.Vector3(0, 500, 10);
-    theBall.transform.localScale = CS.UnityEngine.Vector3.one * 100;
+    theBall.transform.localScale = CS.UnityEngine.Vector3.one * 150;
     theBall.transform.localEulerAngles = CS.UnityEngine.Vector3.zero;
     w = CS.FairyGUI.GoWrapper(theBall);
     w.gameObject.name = "ball";
@@ -125,7 +125,8 @@ function BallGame:Ctor()
     
     local scrip = Npc:GetComponent(typeof(CS.Spine.Unity.Examples.BasicPlatformerController));
     scrip.ball = theBall;
-    print(scrip.ball)
+    self.playerComponent = self.player:GetComponent(typeof(CS.Spine.Unity.Examples.BasicPlatformerController));
+    print(self.playerComponent.ball)
 end
 
 
@@ -148,10 +149,12 @@ function BallGame:Update()
         local ball = ballPosition - playerPosition;
         local length = CS.UnityEngine.Vector3.Distance(ballPosition, playerPosition);
         if length < 2.0 then
-            local rb = self.ballGameObject.GetComponent(CS.UnityEngine.Rigidbody);
+            local rb = self.ballGameObject:GetComponent(CS.UnityEngine.Rigidbody);
             rb.velocity = ball.normalized * 10;
         end
     end
+    --print(self.playerComponent.times)
+    self.mainView:GetChild("text").text = self.playerComponent.times
 end
 
 function update()
