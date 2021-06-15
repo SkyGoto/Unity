@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    public float raceForce = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,11 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (this.gameObject.name == "ball")
+        {
+            var _rigidbody =  this.GetComponent<Rigidbody>();
+            _rigidbody.AddForce(Vector3.up * raceForce, ForceMode.Acceleration);            
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -38,6 +44,7 @@ public class Ball : MonoBehaviour
             var ball = other.gameObject.transform.position;
             var play = this.transform.position;
             var vec = ball - play;
+            var com =  this.transform.parent.GetComponent<BasicPlatformerController>();
             if (this.transform.parent.name == "NPC")
             {
                 var len = ball.x - 10.6f;
@@ -48,7 +55,7 @@ public class Ball : MonoBehaviour
                 // print("NPC");
                 // print(  "力度为 ：" + 6f * (2.0f-sin) * (1 + len/11f) + " 角度为 ：" + radians + " len " + len + " sin : " + sin + " tan " + tan + " other " + (2.0f-sin) + "f" +  (1 + len/11f)+ "f" );
                 var rb = other.GetComponent<Rigidbody>();
-                rb.velocity = vec.normalized * 6f * (2.0f-sin) * (1 + len/11f); // 角度 * 力度 * 角度 * 距离     
+                rb.velocity = vec.normalized * 6f * (2.0f-sin) * (1 + len/11f) * com.velocityRate; // 角度 * 力度 * 角度 * 距离     
             }
             else
             {
@@ -67,10 +74,13 @@ public class Ball : MonoBehaviour
                 // var angle = Math.Atan2(Mathf.Abs(vec.y),Mathf.Abs(vec.x))* 180 / Math.PI;
                 // print(angle + " x " + Mathf.Abs(vec.x) + " y " + Mathf.Abs(vec.y));
                 // var sin = Mathf.Sin((float)angle * Mathf.PI / 90f);
-                var com =  this.transform.parent.GetComponent<BasicPlatformerController>();
-                var t = Mathf.Min(com.times ,com.forceRate);
+                var t = com.times;
                 var rb = other.GetComponent<Rigidbody>();
-                rb.velocity = vec.normalized * com.force * (1 + t);
+                if (com.noAccumulate || com.times > 0f)
+                {
+                    rb.velocity = vec.normalized * com.force * (1 + t) * com.velocityRate;                    
+                }
+                com.times = 0f;
             }
         }
 

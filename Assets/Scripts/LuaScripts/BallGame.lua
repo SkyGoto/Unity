@@ -127,6 +127,17 @@ function BallGame:Ctor()
     scrip.ball = theBall;
     self.playerComponent = self.player:GetComponent(typeof(CS.Spine.Unity.Examples.BasicPlatformerController));
     print(self.playerComponent.ball)
+    self.preTime = 0
+    self.ball = theBall:GetComponent(typeof(CS.Ball));
+    self.ballRigidbody = theBall:GetComponent(typeof(CS.UnityEngine.Rigidbody));
+    self.ballRigidbody.drag = 0  -- 空气阻力
+    self.playerComponent.noAccumulate = true  -- 是否允许不蓄力发球
+    self.playerComponent.canMoveAccumulate = true  -- 是否允许蓄力时移动
+    self.playerComponent.forceRate = 1.5 -- 最大蓄力值
+    self.playerComponent.velocityRate = 0.7  --人发力比例
+    scrip.velocityRate = 0.7  -- NPC发力比例
+    self.raceForce = 4 -- 反重力,改动需要同步改动 NPC发力比例 和 人发力比例
+    scrip.raceForce = self.raceForce
 end
 
 
@@ -149,12 +160,15 @@ function BallGame:Update()
         local ball = ballPosition - playerPosition;
         local length = CS.UnityEngine.Vector3.Distance(ballPosition, playerPosition);
         if length < 2.0 then
-            local rb = self.ballGameObject:GetComponent(CS.UnityEngine.Rigidbody);
+            local rb = self.ballGameObject:GetComponent(typeof(CS.UnityEngine.Rigidbody));
             rb.velocity = ball.normalized * 10;
         end
     end
-    --print(self.playerComponent.times)
-    self.mainView:GetChild("text").text = self.playerComponent.times
+    if  self.playerComponent.times ~= 0 then
+        self.preTime = self.playerComponent.times
+    end
+    self.ball.raceForce = self.raceForce -- 反重力,改动会同步改动 NPC发力比例 和 人发力比例
+    self.mainView:GetChild("text").text = string.format("%0.3f/%0.3f", self.preTime ,self.playerComponent.times)
 end
 
 function update()
