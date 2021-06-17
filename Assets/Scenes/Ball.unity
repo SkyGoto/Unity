@@ -252,6 +252,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2650355184682414894, guid: 25d0c33bfa1040c499109f37ede75dfc, type: 3}
+      propertyPath: runSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4414223043949155483, guid: 25d0c33bfa1040c499109f37ede75dfc, type: 3}
       propertyPath: m_Name
       value: Dianxi
@@ -504,7 +508,7 @@ GameObject:
   - component: {fileID: 1508771282}
   m_Layer: 0
   m_Name: Stage Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

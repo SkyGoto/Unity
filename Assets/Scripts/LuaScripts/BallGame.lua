@@ -136,7 +136,7 @@ function BallGame:Ctor()
     self.playerComponent.forceRate = 1.5 -- 最大蓄力值
     self.playerComponent.velocityRate = 0.7  --人发力比例
     scrip.velocityRate = 0.7  -- NPC发力比例
-    self.raceForce = 4 -- 反重力,改动需要同步改动 NPC发力比例 和 人发力比例
+    self.raceForce = 0 -- 反重力,改动需要同步改动 NPC发力比例 和 人发力比例  !未处理可能会有问题
     scrip.raceForce = self.raceForce
 end
 

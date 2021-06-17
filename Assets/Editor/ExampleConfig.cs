@@ -368,6 +368,7 @@ public static class ExampleConfig
                 new List<string>(){"UnityEngine.UI.DefaultControls", "factory"},
                 new List<string>(){ "UnityEngine.AnimatorControllerParameter", "name"},
                 new List<string>(){ "Spine.Unity.Examples", "TwoByTwoTransformEffectExampleEditor"},
+                new List<string>(){ "Spine.Unity.Examples", "SpineboyTargetController"},
     };
 
 #if UNITY_2018_1_OR_NEWER

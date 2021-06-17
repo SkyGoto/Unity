@@ -8,6 +8,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public float raceForce = 0f;
+    public float fallPlace = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +60,6 @@ public class Ball : MonoBehaviour
             }
             else
             {
-                
                 if (Mathf.Abs(vec.y)/Mathf.Abs(vec.x) > 3.73f)
                 {
                     vec = new Vector3(1.0f, 3.7f, vec.z);
@@ -81,6 +81,18 @@ public class Ball : MonoBehaviour
                     rb.velocity = vec.normalized * com.force * (1 + t) * com.velocityRate;                    
                 }
                 com.times = 0f;
+                
+                // 以下参数未在运行中加入
+                var _position = other.transform.position;
+                var v = rb.velocity.y;
+                var g = Physics.gravity.y + other.GetComponent<Ball>().raceForce;
+                var len = 6.0f + _position.y;
+                // 抛物线计算
+                var a = (- v + Mathf.Sqrt(v * v - 2 * g * len) )/ g;
+                var b = (- v - Mathf.Sqrt(v * v - 2 * g * len) )/ g;
+                var time = Mathf.Max(a, b);
+                var vx = rb.velocity.x;
+                other.GetComponent<Ball>().fallPlace = vx * time + _position.x;
             }
         }
 
