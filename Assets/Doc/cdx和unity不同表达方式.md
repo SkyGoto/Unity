@@ -34,3 +34,6 @@ lua 1
 CS.FairyGUI.UIObjectFactory.SetPackageItemExtension("ui://VirtualList/mailItem", typeof(CS.FairyGUI.MailItem)) 
 
 ### 制作prefab时将transform归 0
+
+## Spine shader
+spine 在渲染过程中需要shader， 不同shader 会渲染出不同效果
